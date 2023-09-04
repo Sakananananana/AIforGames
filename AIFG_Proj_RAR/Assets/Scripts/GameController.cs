@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     public Transform gameController;
     public Transform mob;
+    public Transform target;
 
+    GameObject[] taggedObject;
     public string targetTag = "Enemy";
+    bool isCoroutineFinished = true;
+    bool enemySpawning = false;
+    int enemyCountInWave = 0;
     int enemyCount;
-    
     int num;
 
     // Start is called before the first frame update
@@ -21,20 +26,31 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        GameObject[] taggedObject = GameObject.FindGameObjectsWithTag(targetTag);
+        //Array move up
+        //After instatiate +1 to tagged object
+        taggedObject = GameObject.FindGameObjectsWithTag(targetTag);
         enemyCount = taggedObject.Length;
-        Debug.Log(enemyCount);
 
-        if (enemyCount < 3)
+        if (enemySpawning == false)
         {
-            SpawnPoint();
-            enemyCount += 1;
+            if (enemyCount < 3)
+            {
+                StartCoroutine(SpawnPoint());
+                if (!isCoroutineFinished) 
+                {
+                    enemySpawning = true;
+                    Debug.Log("Coroutine still running");
+                }
+            }
         }
-        else if (enemyCount > 3) { }
     }
 
-    public void SpawnPoint()
+    IEnumerator SpawnPoint()
     {
+        isCoroutineFinished = false;
+
+        yield return new WaitForSeconds(1.5f);
+
         List<GameObject> spawnPoint = new List<GameObject>();
 
         foreach (Transform child in gameController)
@@ -47,24 +63,24 @@ public class GameController : MonoBehaviour
 
         if (spawnPoint.Count > 0)
         {
-            StartCoroutine(SpawnMob(spawnPoint.Count, spawnPoint));
-        }  
-    }
-
-    IEnumerator SpawnMob(int spawnCount, List<GameObject> spawningPoint)
-    {
-        if (enemyCount < 3)
-        {
-            yield return new WaitForSeconds(1.5f);
-
-            GameObject mobSpawnPoint = spawningPoint[Random.Range(0, spawnCount)];
+            GameObject mobSpawnPoint = spawnPoint[Random.Range(0, spawnPoint.Count)];
 
             Vector3 spawnPos = mobSpawnPoint.transform.position;
 
             Transform newMob = Instantiate(mob, spawnPos, Quaternion.identity);
 
-            newMob.SetParent(mobSpawnPoint.transform); 
+            MeeleMobBehaviour mobScript = newMob.GetComponent<MeeleMobBehaviour>();
+
+            mobScript.target = target;
+
+            newMob.SetParent(mobSpawnPoint.transform);
         }
-        else if (enemyCount > 3) { }
+
+        isCoroutineFinished = true;
+
+        enemySpawning = false;
+
+        enemyCountInWave += 1;
     }
+
 }
