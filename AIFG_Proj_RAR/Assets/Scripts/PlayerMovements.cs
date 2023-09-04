@@ -11,15 +11,17 @@ public class PlayerMovements : MonoBehaviour
     Rigidbody rb;
     Animator anim;
     MeeleMobBehaviour mob;
-    private BoxCollider boxCollider;
+    PauseBehaviour pause;
 
+    private BoxCollider boxCollider;
     public Transform cam;
     public GameObject sword;
+    public GameObject pauseMenu;
 
-    float gravity = 9.8f;
     public float speed = 6f;
-    public float turnSmoothTime = 0.1f;
+    float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
+    float gravity = 9.8f;
 
     // Start is called before the first frame update
     void Start()
@@ -34,17 +36,21 @@ public class PlayerMovements : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        boxCollider = sword.GetComponent<BoxCollider>();
+        pause = pauseMenu.GetComponent<PauseBehaviour>();
 
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-        movementMechanics(horizontal, vertical);
-
-        if (Input.GetMouseButtonDown(0))
+        if (pause.paused == false)
         {
-            attackMechanics();
-        }
+            boxCollider = sword.GetComponent<BoxCollider>();
 
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+            movementMechanics(horizontal, vertical);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                attackMechanics();
+            }
+        }
     }
 
     void movementMechanics(float horizontal, float vertical)
@@ -62,7 +68,6 @@ public class PlayerMovements : MonoBehaviour
 
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            Debug.Log(Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward);
             rb.velocity = moveDir * speed;
         }
         else
