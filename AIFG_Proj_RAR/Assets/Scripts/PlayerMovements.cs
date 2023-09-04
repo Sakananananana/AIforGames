@@ -8,7 +8,7 @@ using Debug = UnityEngine.Debug;
 
 public class PlayerMovements : MonoBehaviour
 {
-    Rigidbody rb;
+    public Rigidbody rb;
     Animator anim;
     MeeleMobBehaviour mob;
     PauseBehaviour pause;
