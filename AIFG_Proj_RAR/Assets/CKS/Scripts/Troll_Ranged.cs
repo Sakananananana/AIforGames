@@ -74,12 +74,16 @@ public class Troll_Ranged : MonoBehaviour, IFEnemy
     {
         if (!_isFleeing && !_isAttacking)
         {
+            StopFleeCoroutine();
+            StopShootFireballCoroutine();
+
             if (_patrolDistance > _patrolDistanceGap)
             {
                 _patrolDir = Objects_AI.CalculateDir(_currentPatrolPt, transform.position);
                 _rotateAng = Objects_AI.CalRotateAmount(_patrolDir, transform.forward);
                 _rangedTrollRb.angularVelocity = Objects_AI.AimTarget(_rangedTrollRb, _rotateAng, _rotateSpeed);
                 _rangedTrollRb.velocity = new Vector3(_patrolDir.x * _moveSpeed, 0, _patrolDir.z * _moveSpeed);
+
             }
             else
             {
@@ -88,6 +92,8 @@ public class Troll_Ranged : MonoBehaviour, IFEnemy
         }
         else if (!_isFleeing && _isAttacking)
         {
+            StopFleeCoroutine();
+
             _patrolDir = Objects_AI.CalculateDir(_currentPatrolPt, transform.position);
             _rotateAng = Objects_AI.CalRotateAmount(_patrolDir, transform.forward);
             _rangedTrollRb.angularVelocity = Objects_AI.AimTarget(_rangedTrollRb, _rotateAng, _rotateSpeed);
@@ -95,6 +101,8 @@ public class Troll_Ranged : MonoBehaviour, IFEnemy
         }
         else if(_isFleeing)
         {
+            StopShootFireballCoroutine();
+
             _playerDir = Objects_AI.CalculateDir(_player.position, transform.position);
             _rotateAng = Objects_AI.CalRotateAmount(_playerDir, -transform.forward);
             _rangedTrollRb.angularVelocity = Objects_AI.AimTarget(_rangedTrollRb, _rotateAng, _rotateSpeed);
@@ -160,5 +168,21 @@ public class Troll_Ranged : MonoBehaviour, IFEnemy
         Debug.Log("Flee!");
         yield return new WaitForSeconds(cd);
         _isFleeing = false;
+    }
+    private void StopShootFireballCoroutine()
+    {
+        if (_atkCoroutine != null)
+        {
+            StopCoroutine(_atkCoroutine);
+            _atkCoroutine = null;
+        }
+    }
+    private void StopFleeCoroutine()
+    {
+        if (_fleeCoroutine != null)
+        {
+            StopCoroutine(_fleeCoroutine);
+            _fleeCoroutine = null;
+        }
     }
 }
