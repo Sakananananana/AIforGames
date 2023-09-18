@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    #region Declaration
+    public TextMeshProUGUI waveText;
+    public TextMeshProUGUI timerText;
+    float timeRemaining = 30;
     //declaration
     public Transform gameController;
     public Transform spawnedMob;
@@ -16,7 +21,6 @@ public class GameController : MonoBehaviour
     public Transform troll;
     public Transform mage;
     public Transform wolf;
-    int enemyToBeSpawn;
     int nextMob;
 
     //Check on ground enemy and coroutine progress
@@ -37,7 +41,8 @@ public class GameController : MonoBehaviour
     int trollNum;
     int mageNum;
     int wolfNum;
-    
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +51,7 @@ public class GameController : MonoBehaviour
         enemyCountInWave = 0;
         maxEnemyCountInWave = 10;
         EnemyWave();
+        WaveNumberUpdate();
 
         isInterlude = false;
         enemySpawning = false;
@@ -81,6 +87,11 @@ public class GameController : MonoBehaviour
             {
                 Debug.Log("Resting");
             }
+        }
+
+        if (isInterlude)
+        {
+            TimerUpdate();
         }
     }
 
@@ -135,9 +146,11 @@ public class GameController : MonoBehaviour
         maxEnemyCountInWave += waveCount;
         Debug.Log("this is next wave count " + maxEnemyCountInWave);
         EnemyWave();
+        WaveNumberUpdate();
         nextMob = 0;
         enemyCountInWave = 0;
         isInterlude = false;
+        timeRemaining = 30;
     }
 
     void EnemyWave()
@@ -154,8 +167,6 @@ public class GameController : MonoBehaviour
 
                     for (int i = 0; i < maxEnemyCountInWave; i++)
                     {
-                        Debug.Log(randomIndex);
-
                         if (goblinNum == 0)
                         {
                             prefabEnemy_Mob.Remove(goblin);
@@ -294,4 +305,17 @@ public class GameController : MonoBehaviour
         }
     }
 
+    void WaveNumberUpdate()
+    {
+        waveText.text = "Wave: " + waveCount.ToString() + "/3";
+    }
+
+    void TimerUpdate()
+    {
+        if (timeRemaining > 0)
+        {
+            timeRemaining -= Time.deltaTime;
+            timerText.text = timeRemaining.ToString();
+        }
+    }
 }
