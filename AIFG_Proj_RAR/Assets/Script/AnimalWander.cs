@@ -35,13 +35,18 @@ public class AnimalWander : MonoBehaviour
  
      public float timeSinceLastDirectionChange;
      private float changeDirectionInterval = 5.0f;
+
+     public Animator anim;
+
     // Start is called before the first frame update
      void Start()
     {
         rb = GetComponent<Rigidbody>();
+        //anim = GetComponent<Animator>();
         accelRate = maxSpeed / accelTimeToMax;
         isDead = false;
         isWalking = false;
+        anim.SetBool("isWalking", false);
     }
 
 
@@ -82,18 +87,21 @@ public class AnimalWander : MonoBehaviour
         //Debug.Log(targetDir);
         rb.AddForce(transform.up * gravity * Time.deltaTime);
         circlePos = WanderAi.transform.position + ((curDir * currentSpeed).normalized) * circleDist;
-        Debug.Log(isWalking);
+        //Debug.Log(isWalking);
         if(isWalking == false)
         {
         StartCoroutine(WanderAround());
-isWalking = false;
+
 
         }
         curDir = Vector3.RotateTowards(WanderAi.transform.forward,targetDir, 5*Time.deltaTime, 0.0f);
         //Debug.Log(curDir);
         WanderAi.transform.rotation = Quaternion.LookRotation(curDir);
 
-
+        if (isDead == true)
+        {
+            maxSpeed = 0;
+        }
        
 
         if(currentSpeed < maxSpeed)
@@ -112,11 +120,6 @@ isWalking = false;
         // end wandering
 
         
-        if(isDead == true)
-        {
-
-            amDead();
-        }
 
         Debug.DrawRay(WanderAi.transform.position, targetDir, Color.black);
         Debug.DrawRay(WanderAi.transform.position, WanderAi.transform.forward, Color.green);
@@ -127,25 +130,31 @@ isWalking = false;
     IEnumerator WanderAround()
     {
         //wandering movement
-        
+        yield return new WaitForSeconds(4f); 
         isWalking = true;
-        yield return new WaitForSeconds(3f);    
-        
-        
+        anim.SetBool("isWalking", true);
+       
         maxSpeed = 6;
+        yield return new WaitForSeconds(4f);
+
         isWalking = false;
-                
+        anim.SetBool("isWalking", false);
+        maxSpeed = 0;                
        
        
 
     }
+
     
    
  void amDead()
  {
-    Destroy(gameObject);
-    Instantiate(healingMeat, WanderAi.transform.position, Quaternion.identity);
 
+    Destroy(gameObject,3f);
+    anim.SetTrigger("isDead");
+    
+    Instantiate(healingMeat, WanderAi.transform.position, Quaternion.identity);
+    
  }
 
 
@@ -153,6 +162,8 @@ isWalking = false;
       {
         if (other.CompareTag("Sword"))
         {
+
+        amDead();
         isDead = true;
         }
       }
