@@ -82,6 +82,7 @@ GameObject:
   - component: {fileID: 7838827222424127856}
   - component: {fileID: 5911692435452885872}
   - component: {fileID: 5621866956318068500}
+  - component: {fileID: 6440255277632162967}
   m_Layer: 0
   m_Name: Goblin 3
   m_TagString: Enemy
@@ -168,7 +169,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   detector: {fileID: 7048289046705242028}
-  isChase: 0
   inArea: 0
   isAttack: 0
   hitTarget: 0
@@ -194,6 +194,27 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   attackDamage: 0
+--- !u!65 &6440255277632162967
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7876894229664979725}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &7411080559120161134
 PrefabInstance:
   m_ObjectHideFlags: 0

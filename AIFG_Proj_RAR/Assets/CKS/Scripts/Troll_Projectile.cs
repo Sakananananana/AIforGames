@@ -53,7 +53,7 @@ public class Troll_Projectile : MonoBehaviour
             _isFollowing = false;
         }
 
-        if (collider.CompareTag("Player"))
+        if (collider.CompareTag("Player") || collider.CompareTag("Altar") || collider.CompareTag("Ground"))
         {
             gameObject.SetActive(false);
         }

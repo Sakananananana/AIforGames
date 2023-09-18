@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeeleMobBehaviour : MonoBehaviour
+public class MeeleMobBehaviour : MonoBehaviour, IFMelee
 {
     #region Global Variable Declaration
     //Script Calling

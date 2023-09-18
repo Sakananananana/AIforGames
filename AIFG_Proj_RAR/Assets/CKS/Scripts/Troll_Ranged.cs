@@ -7,9 +7,10 @@ public class Troll_Ranged : MonoBehaviour, IFRanged
     [Header("Preset")]
     [Tooltip("Preset")]
     [SerializeField] private Transform _player;
-    [SerializeField] private Transform[] _patrolPoints;
+    [SerializeField] private GameObject[] _patrolPoints;
     [SerializeField] private GameObject _fireballPrefab;
     [SerializeField] private Transform _firePoint;
+    [SerializeField] private DamageSystem _damageSystem;
 
     [Header("Config")]
     [Tooltip("Config")]
@@ -43,7 +44,12 @@ public class Troll_Ranged : MonoBehaviour, IFRanged
     // Start is called before the first frame update
     void Start()
     {
-        _currentPatrolPt = _patrolPoints[0].position;
+        _damageSystem = GetComponent<DamageSystem>();
+        _damageSystem.Initialize();
+        _patrolPoints = new GameObject[4];
+        _player = GameObject.FindGameObjectWithTag("Player").transform;
+        _patrolPoints = GameObject.FindGameObjectsWithTag("PatrolPoints");
+        _currentPatrolPt = _patrolPoints[0].transform.position;
         _rangedTrollRb = GetComponent<Rigidbody>();
     }
 
@@ -87,7 +93,7 @@ public class Troll_Ranged : MonoBehaviour, IFRanged
             }
             else
             {
-                _currentPatrolPt = _patrolPoints[RandomNum()].position;
+                _currentPatrolPt = _patrolPoints[RandomNum()].transform.position;
             }
         }
         else if (!_isFleeing && _isAttacking)
@@ -116,7 +122,7 @@ public class Troll_Ranged : MonoBehaviour, IFRanged
         int randomNum = 0;
         int randomIndex = 0;
 
-        if(_currentPatrolPt == _patrolPoints[0].position)
+        if(_currentPatrolPt == _patrolPoints[0].transform.position)
         {
             _numList = new() { 1, 2, 3 };
             randomIndex = Random.Range(0, _numList.Count);
@@ -124,7 +130,7 @@ public class Troll_Ranged : MonoBehaviour, IFRanged
 
             return randomNum;
         }
-        else if (_currentPatrolPt == _patrolPoints[1].position)
+        else if (_currentPatrolPt == _patrolPoints[1].transform.position)
         {
             _numList = new() { 0, 2, 3 };
             randomIndex = Random.Range(0, _numList.Count);
@@ -132,7 +138,7 @@ public class Troll_Ranged : MonoBehaviour, IFRanged
 
             return randomNum;
         }
-        else if (_currentPatrolPt == _patrolPoints[2].position)
+        else if (_currentPatrolPt == _patrolPoints[2].transform.position)
         {
             _numList = new() { 0, 1, 3 };
             randomIndex = Random.Range(0, _numList.Count);
@@ -140,7 +146,7 @@ public class Troll_Ranged : MonoBehaviour, IFRanged
 
             return randomNum;
         }
-        else if (_currentPatrolPt == _patrolPoints[3].position)
+        else if (_currentPatrolPt == _patrolPoints[3].transform.position)
         {
             _numList = new() { 0, 1, 2 };
             randomIndex = Random.Range(0, _numList.Count);
@@ -183,6 +189,15 @@ public class Troll_Ranged : MonoBehaviour, IFRanged
         {
             StopCoroutine(_fleeCoroutine);
             _fleeCoroutine = null;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Sword") || other.CompareTag("AirBlade"))
+        {
+            _damageSystem.TakeDamage(10);
+            _isAttacked = true;
         }
     }
 }

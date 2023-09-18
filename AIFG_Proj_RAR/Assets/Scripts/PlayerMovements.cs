@@ -116,6 +116,12 @@ public class PlayerMovements : MonoBehaviour
             Debug.Log("damaged");
             HP -= 10;
         }
+
+        if(other.CompareTag("EnemyProjectile"))
+        {
+            Debug.Log("damaged by EnemyPjt");
+            HP -= 5;
+        }
     }
 
 }

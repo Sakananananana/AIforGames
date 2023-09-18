@@ -105,6 +105,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &7196886097242941340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4049402179877854830}
+  m_Layer: 0
+  m_Name: Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4049402179877854830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7196886097242941340}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.482, z: 1.564}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4704684170232640195}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8833089424206530444
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,9 +149,10 @@ GameObject:
   - component: {fileID: 7564274479930862046}
   - component: {fileID: 7476366710686835358}
   - component: {fileID: 7063799717921890498}
+  - component: {fileID: -8078400759110534470}
   m_Layer: 0
   m_Name: Witch
-  m_TagString: TrollRanged
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,11 +166,12 @@ Transform:
   m_GameObject: {fileID: 8833089424206530444}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 13.676129, y: 7.89, z: -4.62}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2820843236273203273}
   - {fileID: 3956063536016387057}
+  - {fileID: 4049402179877854830}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -242,6 +275,43 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &-8078400759110534470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8833089424206530444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0258e9fb6ab1af43af7b77d68fd122f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPoint: {fileID: 4049402179877854830}
+  _firePoint: {fileID: 2820843236273203273}
+  _pjtPrefab: {fileID: 8209733008608383578, guid: 6a4811c560eb45546b542d8c2f71526c, type: 3}
+  _skeletonF_Prefab: {fileID: 8833089424206530444, guid: 8cf5947706da19942a1eddd140427979, type: 3}
+  _skeletonL_Prefab: {fileID: 8833089424206530444, guid: 9e537409e4e1d89459b502d17dc3b634, type: 3}
+  _summonCount: 3
+  _moveSpeed: 1.5
+  _rotateSpeed: 10
+  _attackCD: 2
+  _atkRange: 50
+  _skeletonL_GO: {fileID: 0}
+  _witchRb: {fileID: 0}
+  _targetTf: {fileID: 0}
+  _playerTf: {fileID: 0}
+  _altarTf: {fileID: 0}
+  _targetDir: {x: 0, y: 0, z: 0}
+  _altarDist: 0
+  _playerDist: 0
+  _targetDist: 0
+  _rotateAng: {x: 0, y: 0, z: 0}
+  _skeletonL_Class: {fileID: 0}
+  _canSpawn: 0
+  _isFiring: 0
+  _atkCount: 0
+  _currentAction: 0
 --- !u!1 &9096434264632119380
 GameObject:
   m_ObjectHideFlags: 0

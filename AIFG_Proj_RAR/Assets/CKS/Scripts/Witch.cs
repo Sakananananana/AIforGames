@@ -119,22 +119,27 @@ public class Witch : MonoBehaviour, IFRanged
                         _skeletonL_GO = Instantiate(_skeletonL_Prefab, _spawnPoint.position, transform.rotation);
                         _skeletonL_Class = _skeletonL_GO.GetComponent<SkeletonL>();
                     }
-                    else
+                    else if(i < _summonCount)
                     {
                         GameObject tempS_FGO = Instantiate(_skeletonF_Prefab, _spawnPoint.position, transform.rotation);
                         tempS_FGO.SetActive(false);
                         var fClass = tempS_FGO.GetComponent<SkeletonF>();
                         fClass._skeletonL_GO = _skeletonL_GO;
 
-                        if (_skeletonL_Class._formationPoss[i] != null)
+                        if (_skeletonL_Class._formationPoss[i - 1] != null)
                         {
-                            tempS_FGO.transform.position = _skeletonL_Class._formationPoss[i].position;
-                            fClass._followingPosTf = _skeletonL_Class._formationPoss[i];
+                            tempS_FGO.transform.position = _skeletonL_Class._formationPoss[i - 1].position;
+                            fClass._followingPosTf = _skeletonL_Class._formationPoss[i - 1];
                         }
+                    }
+                    if(i >= _summonCount - 1)
+                    {
+                        _canSpawn = false;
+                        _atkCount = 0;
+                        Debug.Log("Reset Spawn Skeleton");
                     }
                 }
 
-                _canSpawn = false;
                 break;
         }
     }
@@ -161,10 +166,7 @@ public class Witch : MonoBehaviour, IFRanged
         {
             _atkCount++;
         }
-        else
-        {
-            _atkCount = 0;
-        }
+
         yield return new WaitForSeconds(cd);
         _isFiring = false;
     }

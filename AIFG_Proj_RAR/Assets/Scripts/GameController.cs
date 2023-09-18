@@ -123,7 +123,10 @@ public class GameController : MonoBehaviour
 
             newMob.SetParent(spawnedMob.transform);
 
-            mobScript.target = target;
+            if (mobScript != null)
+            {
+                mobScript.target = target;
+            }
         }
 
         isCoroutineFinished = true;

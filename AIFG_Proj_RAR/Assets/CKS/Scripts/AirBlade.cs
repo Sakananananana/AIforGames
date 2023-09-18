@@ -13,7 +13,7 @@ public class AirBlade : MonoBehaviour
     
     [Header("Debug")]
     [Tooltip("Debug")]
-    [SerializeField] private Character_AirBladeAttack _playerAttack;
+    public Character_AirBladeAttack _playerAttack;
     [SerializeField] private Rigidbody _pjtRb;
     [SerializeField] private Vector3 _pjtDirection;
     [SerializeField] private Vector3 _pjtRotateAng;
@@ -23,8 +23,10 @@ public class AirBlade : MonoBehaviour
 
     private void OnEnable()
     {
+        _pjtRb = GetComponent<Rigidbody>();
+
         //Chase a random target from the List of enemies within range, prior ranged enemy
-        _playerAttack = GameObject.FindGameObjectWithTag("Player").GetComponent<Character_AirBladeAttack>();
+        ////_playerAttack = GameObject.FindGameObjectWithTag("Player").GetComponent<Character_AirBladeAttack>();
         _meleeEnemyNum = _playerAttack._meleeEnemiesInRange.Count;
         _rangedEnemyNum = _playerAttack._rangedEnemiesInRange.Count;
 
@@ -51,6 +53,8 @@ public class AirBlade : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _pjtRb = GetComponent<Rigidbody>();
+
         if (_rangedEnemyNum < 1)
         {
             _target = _playerAttack._meleeEnemiesInRange[RandomNum()];
@@ -94,7 +98,7 @@ public class AirBlade : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other == _target)
+        if (other.gameObject == _target)
         {
             gameObject.SetActive(false);
             //Deal damage to target
@@ -112,11 +116,9 @@ public class AirBlade : MonoBehaviour
             for (int i = 0; i < _meleeEnemyNum; i++)
             {
                 _numList.Add(i);
+                randomIndex = Random.Range(0, _numList.Count);
+                randomNum = _numList[randomIndex];
             }
-
-            randomIndex = Random.Range(0, _numList.Count);
-            randomNum = _numList[randomIndex];
-
             return randomNum;
         }
         else
@@ -124,14 +126,11 @@ public class AirBlade : MonoBehaviour
             for (int i = 0; i < _rangedEnemyNum; i++)
             {
                 _numList.Add(i);
+                randomIndex = Random.Range(0, _numList.Count);
+                randomNum = _numList[randomIndex];
             }
-
-            randomIndex = Random.Range(0, _numList.Count);
-            randomNum = _numList[randomIndex];
 
             return randomNum;
         }
-
-        return randomNum;
     }
 }

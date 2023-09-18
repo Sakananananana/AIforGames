@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class SkeletonF : MonoBehaviour, IFMelee
 {
-    public Transform _followingPosTf;
-    [SerializeField] private Transform _playerTf;
+
     
     [Tooltip("Config")]
     [SerializeField] private float _moveSpeed;
@@ -18,6 +17,8 @@ public class SkeletonF : MonoBehaviour, IFMelee
     [Header("Debug")]
     [Tooltip("Debug")]
     public GameObject _skeletonL_GO;
+    public Transform _followingPosTf;
+    [SerializeField] private Transform _playerTf;
     [SerializeField] private Rigidbody _skeletonF_Rb;
     [SerializeField] private Transform _targetTf;
     [SerializeField] private Vector3 _targetDir;

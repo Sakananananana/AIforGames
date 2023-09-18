@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class Character_AirBladeAttack : MonoBehaviour
 {
+    [Header("Preset")]
+    [Tooltip("Preset")]
     [SerializeField] private Transform[] _firepoints;
     [SerializeField] private GameObject _airBladePrefab;
-    [SerializeField] private GameObject[] _airBladeGOs;
+    [SerializeField] private float _skillCD;
+
+
+    [Header("Debug")]
+    [Tooltip("Debug")]
+    public List<GameObject> _airBladeGOs;
     public List<GameObject> _rangedEnemiesInRange = new();
     public List<GameObject> _meleeEnemiesInRange = new();
     [SerializeField] private bool _canAirBlade;
+    [SerializeField] private float _cdCount;
 
-    // Start is called before the first frame update
-    void Start()
+
+   // Start is called before the first frame update
+   void Start()
     {
         
     }
@@ -30,27 +39,38 @@ public class Character_AirBladeAttack : MonoBehaviour
         }
 
         //if can AirBlade then show UI
+        if(_cdCount < _skillCD)
+        {
+            _cdCount += Time.deltaTime;
+        }
 
         if(Input.GetKeyDown(KeyCode.E))
         {
-            if (_canAirBlade)
+            if (_cdCount >= _skillCD)
             {
-                if (_airBladeGOs == null)
+                if (_canAirBlade)
                 {
-                    for (int i = 0; i < _firepoints.Length; i++)
+                    if (_airBladeGOs.Count < _firepoints.Length)
                     {
-                        _airBladeGOs[i] = Instantiate(_airBladePrefab, _firepoints[i].position, _firepoints[i].rotation);
+                        for (int i = 0; i < _firepoints.Length; i++)
+                        {
+                            GameObject tempGO = Instantiate(_airBladePrefab, _firepoints[i].position, _firepoints[i].rotation);
+                            tempGO.GetComponent<AirBlade>()._playerAttack = this;
+                            _airBladeGOs.Add(tempGO);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < _firepoints.Length; i++)
+                        {
+                            _airBladeGOs[i].transform.position = _firepoints[i].position;
+                            _airBladeGOs[i].SetActive(true);
+                        }
                     }
                 }
-                else
-                {
-                    for (int i = 0; i < _firepoints.Length; i++)
-                    {
-                        _airBladeGOs[i].transform.position = _firepoints[i].position;
-                        _airBladeGOs[i].SetActive(true);
-                    }
-                }
-            }
+
+                _cdCount = 0;
+            }   
         }
     }
 

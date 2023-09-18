@@ -22,6 +22,7 @@ public class WolfRider : MonoBehaviour, IFMelee
     [SerializeField] private Vector3 _altarDir;
     [SerializeField] private Vector3 _rotateAng;
     [SerializeField] private float _altarDistance;
+    [SerializeField] private bool _canAttack;
     [SerializeField] private bool _isAttacking;
     [SerializeField] private bool _isFirstAttacked;
     [SerializeField] private Coroutine _atkCoroutine;
@@ -31,6 +32,8 @@ public class WolfRider : MonoBehaviour, IFMelee
     void Start()
     {
         _wolfRiderRb = GetComponent<Rigidbody>();
+        _player = GameObject.FindGameObjectWithTag("Player").transform;
+        _altar = GameObject.FindGameObjectWithTag("Altar").transform;
     }
 
     // Update is called once per frame
@@ -47,6 +50,7 @@ public class WolfRider : MonoBehaviour, IFMelee
     {
         if (_altarDistance > _attackRange)
         {
+            _isAttacking = false;
             _altarDir = Objects_AI.CalculateDir(_altar.position, transform.position);
             _rotateAng = Objects_AI.CalRotateAmount(_altarDir, transform.forward);
             _wolfRiderRb.angularVelocity = Objects_AI.AimTarget(_wolfRiderRb, _rotateAng, _rotateSpeed);
@@ -55,20 +59,23 @@ public class WolfRider : MonoBehaviour, IFMelee
         }
         else
         {
-            _isAttacking = true;
+            if(!_canAttack)
+            {
+                _isAttacking = true;
+                _canAttack = true;
+            }
         }
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        if(collider.CompareTag("Player"))
+        if(collider.CompareTag("Sword") || collider.CompareTag("AirBlade"))
         {
             if (!_isFirstAttacked)
             {
                 _moveSpeed = _ragedMoveSpd;
                 _isFirstAttacked = true;
             }
-            //Slow player and repel his first attack
         }
     }
     private IEnumerator StartAttack(float cd)
@@ -79,6 +86,7 @@ public class WolfRider : MonoBehaviour, IFMelee
 
         Debug.Log("WolfRider Attack!");
         yield return new WaitForSeconds(cd);
+        _isAttacking = true;
     }
     private void StopAttackCoroutine()
     {

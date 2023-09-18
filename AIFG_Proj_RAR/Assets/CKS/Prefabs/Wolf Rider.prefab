@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 3192148684140123223}
   m_Layer: 0
   m_Name: Wolf Rider
-  m_TagString: TrollRanged
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -288,10 +288,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 0}
   _altar: {fileID: 0}
-  _moveSpeed: 2
+  _moveSpeed: 1
   _ragedMoveSpd: 10
   _rotateSpeed: 10
-  _attackRange: 10
+  _attackRange: 50
   _attackCD: 2
   _wolfRiderRb: {fileID: 0}
   _altarDir: {x: 0, y: 0, z: 0}
