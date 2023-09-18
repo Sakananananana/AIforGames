@@ -36,7 +36,6 @@ public class MeeleMobBehaviour : MonoBehaviour
     private Vector3 groundCheckPos = new Vector3(0, 0.5f, 0);
 
     //Boolean & Layer Mask Declaration
-    public bool isChase;
     public bool inArea = false;
     public bool isAttack = false;
     public bool hitTarget = false;
@@ -65,7 +64,10 @@ public class MeeleMobBehaviour : MonoBehaviour
         if (detect.inRange)
         {
             isAttack = true;
-            anim.SetBool("isAttack", true);
+            if (isAttack)
+            {
+                anim.SetBool("isAttack", true);
+            }
         }
         else if (detect.inRange == false && isAttack)
         {
@@ -76,6 +78,7 @@ public class MeeleMobBehaviour : MonoBehaviour
 
         if (!isAttack)
         {
+            anim.SetBool("isAttack", false);
             GroundCheck();
             SeekBehave();
         }
@@ -174,9 +177,18 @@ public class MeeleMobBehaviour : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.CompareTag("Sword"))
+    //    {
+    //        TakeDamage(10);
+    //        Debug.Log(dmgSys.currentHealth);
+    //    }
+    //}
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Sword"))
+        if (collision.gameObject.CompareTag("Sword"))
         {
             TakeDamage(10);
             Debug.Log(dmgSys.currentHealth);

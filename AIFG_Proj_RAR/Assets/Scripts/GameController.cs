@@ -11,13 +11,16 @@ public class GameController : MonoBehaviour
     //mark main character as target
     public Transform target;
     //enemy & mobs to spawn in game
+    [SerializeField] List<Transform> prefabEnemy_Mob;
     public Transform goblin;
-    public Transform[] allEnemy_Mob;
+    public Transform troll;
+    public Transform mage;
+    public Transform wolf;
     int enemyToBeSpawn;
     int nextMob;
 
     //Check on ground enemy and coroutine progress
-    Transform[] thisWaveSpawnthisEnemy;
+    [SerializeField] List<Transform> thisWaveSpawnthisEnemy;
     GameObject[] currentEnemyCount;
     public string targetTag = "Enemy";
     bool isCoroutineFinished;
@@ -29,10 +32,12 @@ public class GameController : MonoBehaviour
     int enemyCount;
     int waveCount;
     //for randomize mob spawn and specific num of the mob
+    int randomIndex;
     int goblinNum;
+    int trollNum;
     int mageNum;
-    int num;
-
+    int wolfNum;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -56,7 +61,7 @@ public class GameController : MonoBehaviour
         //for now it spawn until 10, now i want to control the mob on playground is 3 max and overall count is 10
         if (enemySpawning == false && enemyCountInWave != maxEnemyCountInWave)
         {
-            if (enemyCount <= 9)
+            if (enemyCount <= 2)
             {
                 //Spawn enemy 
                 StartCoroutine(SpawnPoint());
@@ -122,11 +127,15 @@ public class GameController : MonoBehaviour
     IEnumerator Interlude()
     {
         isInterlude = true;
+        thisWaveSpawnthisEnemy.Clear();
         waveCount += 1;
+        
         yield return new WaitForSeconds(30);
 
         maxEnemyCountInWave += waveCount;
         Debug.Log("this is next wave count " + maxEnemyCountInWave);
+        EnemyWave();
+        nextMob = 0;
         enemyCountInWave = 0;
         isInterlude = false;
     }
@@ -137,41 +146,151 @@ public class GameController : MonoBehaviour
         { 
             case 1:
                 {
-                    enemyToBeSpawn = allEnemy_Mob.Length;
-                    goblinNum = 7;
+                    goblin = prefabEnemy_Mob[0];
+                    mage = prefabEnemy_Mob[1];
+
                     mageNum = 3;
+                    goblinNum = 7;
 
                     for (int i = 0; i < maxEnemyCountInWave; i++)
                     {
-                        int randomIndex = Random.Range(0, enemyToBeSpawn);
-                        thisWaveSpawnthisEnemy[i] = allEnemy_Mob[randomIndex];
-                        if (allEnemy_Mob[randomIndex] == goblin)
+                        Debug.Log(randomIndex);
+
+                        if (goblinNum == 0)
+                        {
+                            prefabEnemy_Mob.Remove(goblin);
+                        }
+                        if (mageNum == 0)
+                        {
+                            prefabEnemy_Mob.Remove(mage);
+                        }
+
+                        randomIndex = Random.Range(0, prefabEnemy_Mob.Count);
+                        thisWaveSpawnthisEnemy.Add(prefabEnemy_Mob[randomIndex]);
+                        if (prefabEnemy_Mob[randomIndex] == goblin)
                         {
                             goblinNum--;
                         }
                         else
-                        { 
+                        {
                             mageNum--;
                         }
-
-                        if (goblinNum == 0 && mageNum == 0)
-                        { 
-                            break;
-                        } 
                     }
 
-                    //7 goblin, 3 mage
-                }break;
+                    prefabEnemy_Mob.Clear();
+
+                    prefabEnemy_Mob.Insert(0, goblin);
+                    prefabEnemy_Mob.Insert(1, mage);
+                    prefabEnemy_Mob.Insert(2, wolf);
+
+                }
+                break;
 
             case 2:
-                { 
-                    //6 goblin, 3 mage, 3 wolf rider
-                }break;
+                {
+                    goblin = prefabEnemy_Mob[0];
+                    mage = prefabEnemy_Mob[1];
+                    wolf = prefabEnemy_Mob[2];
+
+                    wolfNum = 3;
+                    mageNum = 3;
+                    goblinNum = 6;
+                    
+
+                    for (int i = 0; i < maxEnemyCountInWave; i++)
+                    {
+                        if (goblinNum == 0)
+                        {
+                            prefabEnemy_Mob.Remove(goblin);
+                        }
+                        if (mageNum == 0)
+                        {
+                            prefabEnemy_Mob.Remove(mage);
+                        }
+                        if (wolfNum == 0)
+                        {
+                            prefabEnemy_Mob.Remove(wolf);
+                        }
+
+                        randomIndex = Random.Range(0, prefabEnemy_Mob.Count);
+                        thisWaveSpawnthisEnemy.Add(prefabEnemy_Mob[randomIndex]);
+                        if (prefabEnemy_Mob[randomIndex] == goblin)
+                        {
+                            goblinNum--;
+                        }
+                        if (prefabEnemy_Mob[randomIndex] == mage)
+                        {
+                            mageNum--;
+                        }
+                        if (prefabEnemy_Mob[randomIndex] == wolf)
+                        {
+                            wolfNum--;
+                        }
+                    }
+
+                    prefabEnemy_Mob.Clear();
+
+                    prefabEnemy_Mob.Insert(0, goblin);
+                    prefabEnemy_Mob.Insert(1, mage);
+                    prefabEnemy_Mob.Insert(2, wolf);
+                    prefabEnemy_Mob.Insert(3, troll);
+                }
+                break;
 
             case 3: 
-                { 
-                    //pending
-                }break;
+                {
+                    goblin = prefabEnemy_Mob[0];
+                    mage = prefabEnemy_Mob[1];
+                    wolf = prefabEnemy_Mob[2];
+                    troll= prefabEnemy_Mob[3];
+
+                    wolfNum = 3;
+                    mageNum = 3;
+                    trollNum = 3;
+                    goblinNum = 6;
+
+                    for (int i = 0; i < maxEnemyCountInWave; i++)
+                    {
+                        if (goblinNum == 0)
+                        {
+                            prefabEnemy_Mob.Remove(goblin);
+                        }
+                        if (mageNum == 0)
+                        {
+                            prefabEnemy_Mob.Remove(mage);
+                        }
+                        if (wolfNum == 0)
+                        {
+                            prefabEnemy_Mob.Remove(wolf);
+                        }
+                        if (trollNum == 0)
+                        {
+                            prefabEnemy_Mob.Remove(troll);
+                        }
+
+                        randomIndex = Random.Range(0, prefabEnemy_Mob.Count);
+                        thisWaveSpawnthisEnemy.Add(prefabEnemy_Mob[randomIndex]);
+                        if (prefabEnemy_Mob[randomIndex] == goblin)
+                        {
+                            goblinNum--;
+                        }
+                        if (prefabEnemy_Mob[randomIndex] == mage)
+                        {
+                            mageNum--;
+                        }
+                        if (prefabEnemy_Mob[randomIndex] == wolf)
+                        {
+                            wolfNum--;
+                        }
+                        if (prefabEnemy_Mob[randomIndex] == troll)
+                        {
+                            trollNum--;
+                        }
+                    }
+
+                    prefabEnemy_Mob.Clear();
+                }
+                break;
         }
     }
 

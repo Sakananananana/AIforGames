@@ -91,7 +91,7 @@ public class PlayerMovements : MonoBehaviour
     {
         anim.SetTrigger("attack");
         boxCollider.enabled = true;
-        Invoke("attackOff", 1f);
+        Invoke("attackOff", 2f);
     }
 
     void attackOff()
@@ -115,4 +115,5 @@ public class PlayerMovements : MonoBehaviour
             HP -= 10;
         }
     }
+
 }
