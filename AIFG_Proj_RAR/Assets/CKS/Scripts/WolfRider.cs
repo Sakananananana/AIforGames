@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WolfRider : MonoBehaviour, IFEnemy
+public class WolfRider : MonoBehaviour, IFMelee
 {
     [Header("Preset")]
     [Tooltip("Preset")]
