@@ -8,16 +8,19 @@ using Debug = UnityEngine.Debug;
 
 public class PlayerMovements : MonoBehaviour
 {
-    public Rigidbody rb;
     Animator anim;
-    MeeleMobBehaviour mob;
+    public Rigidbody rb;
+    DamageSystem dmgSys;
     PauseBehaviour pause;
+    MeeleMobBehaviour mob;
 
     private BoxCollider boxCollider;
     public Transform cam;
     public GameObject sword;
     public GameObject pauseMenu;
 
+    public int HP;
+    public bool isDead;
     public float speed = 6f;
     float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
@@ -31,6 +34,8 @@ public class PlayerMovements : MonoBehaviour
         mob = GetComponent<MeeleMobBehaviour>();
 
         boxCollider = sword.GetComponent<BoxCollider>();
+        isDead = false;
+        HP = 1000;
     }
 
     // Update is called once per frame
@@ -38,7 +43,7 @@ public class PlayerMovements : MonoBehaviour
     {
         pause = pauseMenu.GetComponent<PauseBehaviour>();
 
-        if (pause.paused == false)
+        if (pause.paused == false && !isDead)
         {
             boxCollider = sword.GetComponent<BoxCollider>();
 
@@ -50,6 +55,8 @@ public class PlayerMovements : MonoBehaviour
             {
                 attackMechanics();
             }
+
+            HpMechanics();
         }
     }
 
@@ -92,8 +99,20 @@ public class PlayerMovements : MonoBehaviour
         boxCollider.enabled = false;
     }
 
-    void bla()
-    { 
-    
+    public void HpMechanics()
+    {
+        if (HP <= 0)
+        {
+            isDead = true;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bat"))
+        {
+            Debug.Log("damaged");
+            HP -= 10;
+        }
     }
 }

@@ -4,37 +4,53 @@ using UnityEngine;
 
 public class MeeleMobBehaviour : MonoBehaviour
 {
+    #region Global Variable Declaration
+    //Script Calling
     AttackRangeDetector detect;
     DamageSystem dmgSys;
     Animator anim;
     Rigidbody rb;
 
+    //Game Object & Transform References
     public Transform target;
     public GameObject detector;
 
-    private float maxSpeed = 5.0f;
+    //Float Declaration
+    private float charPos;
     private float speed = 2.5f;
-    private float steeringForce = 5.0f;
+    private float gravity = -9.8f;
+    private float maxSpeed = 5.0f;
+    private float steeringForce = 7.5f;
     private float accelerationTimeToMax = 3.0f;
+    private float distBetweenObst;
+    private float distBetweenNorm;
     private float accelerationRate;
-    float gravity = 9.8f;
 
+    //Vector3 Declaration
+    private Vector3 avoidPos;
+    private Vector3 hitPtPos;
+    private Vector3 steerDir;
     private Vector3 targetPos;
     private Vector3 targetDir;
     private Vector3 currentDir;
-    private Vector3 steerDir;
-    private Vector3 downForce = new Vector3 (0, -1, 0);
+    private Vector3 groundCheckPos = new Vector3(0, 0.5f, 0);
 
+    //Boolean & Layer Mask Declaration
     public bool isChase;
     public bool inArea = false;
     public bool isAttack = false;
-
+    public bool hitTarget = false;
+    public bool isGrounded = false;
+    public LayerMask ground;
+    public LayerMask wall;
+    #endregion
 
     void Start()
     {
-       dmgSys = GetComponent<DamageSystem>();
-       anim = GetComponent<Animator>();
-       rb = GetComponent<Rigidbody>();
+        detect = detector.GetComponent<AttackRangeDetector>();
+        dmgSys = GetComponent<DamageSystem>();
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
 
         if (dmgSys != null)
         { 
@@ -42,60 +58,65 @@ public class MeeleMobBehaviour : MonoBehaviour
         }
 
         accelerationRate = maxSpeed / accelerationTimeToMax;
-
-        //ChaseBehave();
     }
 
     void Update()
     {
-        detect = detector.GetComponent<AttackRangeDetector>();
-        
-
         if (detect.inRange)
         {
             isAttack = true;
             anim.SetBool("isAttack", true);
         }
-        else if (detect.inRange == false)
+        else if (detect.inRange == false && isAttack)
         {
             anim.SetBool("isAttack", false);
             anim.SetBool("isAttackEnd", true);
-
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("isAttackEnd"))
-            {
-
-            }
-            else
-            {
-                anim.SetBool("isAttackEnd", false);
-                isAttack = false;
-                //Debug.Log("chase again");
-            }
+            StartCoroutine(isAttackManager());
         }
 
         if (!isAttack)
         {
-            ChaseBehave();
-        }
-        else 
-        {
-        
+            GroundCheck();
+            SeekBehave();
         }
     }
-
-    public void TakeDamage(int damage)
-    { 
-        if (dmgSys != null) 
-        {
-            dmgSys.TakeDamage(damage);
-        }
-    }
-
-    private void ChaseBehave()
+   
+    private void SeekBehave()
     {
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 5.0f, wall))
+        {
+            if (hit.transform.CompareTag("Obstacle"))
+            {
+                hitPtPos = hit.point;
+                avoidPos = hit.point + hit.normal * 5f;
+                Debug.DrawLine(transform.position, avoidPos);
+            }
+            hitTarget = true;
+        }
+        else
+        {
+            targetPos = target.position;
+        }
+
+        if (hitTarget)
+        {
+            targetPos = avoidPos;
+            distBetweenObst = (transform.position - hitPtPos).magnitude;
+            distBetweenNorm = (avoidPos - transform.position).magnitude;
+            charPos = transform.position.magnitude;
+        }
+        if (distBetweenObst >= 4f)
+        {
+            hitTarget = false;
+            targetPos = target.position;
+            hitPtPos = Vector3.zero;
+            avoidPos = Vector3.zero;
+        }
+
         //desired 
-        targetPos = target.position;
-        targetDir = (target.position - transform.position).normalized;
+        targetDir = (targetPos - transform.position).normalized;
         targetDir.y = 0;
 
         //current
@@ -112,7 +133,45 @@ public class MeeleMobBehaviour : MonoBehaviour
         }
 
         steerDir = targetDir - currentDir;
-        rb.velocity = (speed * currentDir) + (steerDir * steeringForce) + (downForce * gravity);
+        rb.AddForce(steerDir * steeringForce);
+        if (isGrounded)
+        {
+            rb.velocity = (speed * currentDir);
+        }
+        else
+        {
+            rb.velocity = (speed * currentDir);
+            rb.velocity = Vector3.up * gravity;
+        }
+    }
+
+    private void GroundCheck()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position - groundCheckPos, 0.15f, ground);
+
+        if (colliders.Length > 0)
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+    }
+
+    IEnumerator isAttackManager()
+    {
+        yield return new WaitForSeconds(4.5f);
+        anim.SetBool("isAttackEnd", false);
+        isAttack = false;
+    }
+
+    public void TakeDamage(int damage)
+    { 
+        if (dmgSys != null) 
+        {
+            dmgSys.TakeDamage(damage);
+        }
     }
 
     private void OnTriggerEnter(Collider other)

@@ -104,7 +104,7 @@ Transform:
   - {fileID: 8221985815768579307}
   - {fileID: 1447367281993186251}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3736949098492752787
 Animator:
@@ -152,7 +152,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 84
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &5911692435452885872
 MonoBehaviour:
@@ -171,6 +171,14 @@ MonoBehaviour:
   isChase: 0
   inArea: 0
   isAttack: 0
+  hitTarget: 0
+  isGrounded: 0
+  ground:
+    serializedVersion: 2
+    m_Bits: 64
+  wall:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &5621866956318068500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1158,6 +1166,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: deb_Goblin01
       objectReference: {fileID: 0}
+    - target: {fileID: 8272943599224061579, guid: 47b41978aba272c47ae5f4a2f7179c61, type: 3}
+      propertyPath: m_TagString
+      value: Bat
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272943599224061583, guid: 47b41978aba272c47ae5f4a2f7179c61, type: 3}
+      propertyPath: m_TagString
+      value: Bat
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1165,12 +1181,41 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8272943599224061593, guid: 47b41978aba272c47ae5f4a2f7179c61, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6395490349363053812}
+    - targetCorrespondingSourceObject: {fileID: 8272943599224061579, guid: 47b41978aba272c47ae5f4a2f7179c61, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 44352121949261661}
   m_SourcePrefab: {fileID: 100100000, guid: 47b41978aba272c47ae5f4a2f7179c61, type: 3}
 --- !u!4 &1447367281993186251 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8272943599223628453, guid: 47b41978aba272c47ae5f4a2f7179c61, type: 3}
   m_PrefabInstance: {fileID: 7411080559120161134}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1447367281993476069 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8272943599224061579, guid: 47b41978aba272c47ae5f4a2f7179c61, type: 3}
+  m_PrefabInstance: {fileID: 7411080559120161134}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &44352121949261661
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1447367281993476069}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.24312147, y: 0.22292632, z: 0.68030834}
+  m_Center: {x: -0.0058564967, y: -0.011035835, z: 0.4448288}
 --- !u!1 &1447367281993476087 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8272943599224061593, guid: 47b41978aba272c47ae5f4a2f7179c61, type: 3}

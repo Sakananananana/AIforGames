@@ -26,6 +26,7 @@ public class DamageSystem : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
+        //this.gameObject.SetActive(false);
         Debug.Log("Enemy Died");
     }
 }

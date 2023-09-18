@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class UserInterface : MonoBehaviour
 {
-    public TextMeshProUGUI title;
     public TextMeshProUGUI buttonText;
+    public TextMeshProUGUI title;
+    public GameObject settingPanel;
     public GameObject character;
     Animator anim;
 
@@ -16,19 +17,36 @@ public class UserInterface : MonoBehaviour
         anim = character.GetComponent<Animator>();
     }
 
-    public void StartButton()
-    {
-        anim.SetBool("attack", true);
-        title.gameObject.SetActive(false);
-        buttonText.gameObject.SetActive(false);
-        Invoke("LoadGame", 3f);
-    }
-    public void LoadGame()
-    {
-        SceneManager.LoadScene("SampleScene");
-    }
     public void LoadLevel(string levelName)
+    {
+        if (levelName == "Game_Scene")
+        {
+            Time.timeScale = 1.0f;
+            title.gameObject.SetActive(false);
+            buttonText.gameObject.SetActive(false);
+            anim.SetBool("attack", true);
+            StartCoroutine(LoadScene(levelName));
+        }
+        else 
+        {
+            Time.timeScale = 1.0f;
+            SceneManager.LoadScene(levelName);
+        }
+    }
+
+    IEnumerator LoadScene(string level)
+    {
+        yield return new WaitForSeconds(3.0f);
+        SceneManager.LoadScene(level);
+    }
+
+    public void ToggleONSettingMenu()
+    {
+        settingPanel.SetActive(true);
+    }
+
+    public void ToggleOFFSettingMenu()
     { 
-        SceneManager.LoadScene(levelName);
+        settingPanel.SetActive(false);
     }
 }

@@ -5,43 +5,83 @@ using UnityEngine.SceneManagement;
 
 public class PauseBehaviour : UserInterface
 {
-    public bool paused = false;
+    PlayerMovements player;
+
+    public bool paused;
+    public bool isSetting;
     public GameObject pauseMenu;
-    //unpause the game
-
-    public void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (paused == false) 
-            {
-                paused = true;
-                
-            }
-            else if (paused == true)
-            {
-                paused = false;
-            }   
-        }
-
-        SetPauseMenu(paused);
-    }
-    public void Restart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void SetPauseMenu(bool isPaused)
-    { 
-        paused = isPaused;
-
-        Time.timeScale = (paused) ? 0 : 1;
-        pauseMenu.SetActive(paused);
-    }
+    public GameObject settingMenu;
+    public GameObject restartMenu;
 
     private void Start()
     {
         paused = false;
+        isSetting = false;
+
+        player = character.GetComponent<PlayerMovements>();
+    }
+
+    public void Update()
+    {
+        if (!player.isDead)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (paused == false)
+                {
+                    paused = true;
+                    SetPauseMenu();
+
+                }
+                else if (paused == true)
+                {
+                    paused = false;
+                    SetPauseMenu();
+                }
+            }
+        }
+        else
+        { 
+            RestartMenu();
+        }
+    }
+
+    public void BackToPause()
+    {
+        pauseMenu.SetActive(true);
+        settingMenu.SetActive(false);
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1.0f;
+        player.isDead = false;
+        player.HP = 100;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void SetPauseMenu()
+    { 
+        Time.timeScale = (paused) ? 0 : 1;
+        pauseMenu.SetActive(paused);
+    }
+
+    public void SettingMenu()
+    {
+        pauseMenu.SetActive(false);
+        settingMenu.SetActive(true);
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        paused = false;
+        pauseMenu.SetActive(false);
+    }
+
+    public void RestartMenu()
+    {
+        Time.timeScale = 0;
+        restartMenu.SetActive(true);
     }
 }

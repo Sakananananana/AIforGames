@@ -36,5 +36,4 @@ public class AttackRangeDetector : MonoBehaviour
             detected = false;
         }
     }
-
 }
