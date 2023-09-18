@@ -6,6 +6,7 @@ public class MeeleMobBehaviour : MonoBehaviour
 {
     #region Global Variable Declaration
     //Script Calling
+    PlayerMovements player;
     AttackRangeDetector detect;
     DamageSystem dmgSys;
     Animator anim;
@@ -47,6 +48,7 @@ public class MeeleMobBehaviour : MonoBehaviour
     void Start()
     {
         detect = detector.GetComponent<AttackRangeDetector>();
+        player = GetComponent<PlayerMovements>();
         dmgSys = GetComponent<DamageSystem>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -177,18 +179,9 @@ public class MeeleMobBehaviour : MonoBehaviour
         }
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.CompareTag("Sword"))
-    //    {
-    //        TakeDamage(10);
-    //        Debug.Log(dmgSys.currentHealth);
-    //    }
-    //}
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Sword"))
+        if (other.CompareTag("Sword"))
         {
             TakeDamage(10);
             Debug.Log(dmgSys.currentHealth);

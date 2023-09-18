@@ -19,6 +19,7 @@ public class PlayerMovements : MonoBehaviour
     public GameObject sword;
     public GameObject pauseMenu;
 
+    public int damage;
     public int HP;
     public bool isDead;
     public float speed = 6f;
@@ -36,6 +37,7 @@ public class PlayerMovements : MonoBehaviour
         boxCollider = sword.GetComponent<BoxCollider>();
         isDead = false;
         HP = 1000;
+        damage = 15;
     }
 
     // Update is called once per frame
