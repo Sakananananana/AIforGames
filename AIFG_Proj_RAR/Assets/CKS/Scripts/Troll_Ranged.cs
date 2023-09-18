@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Troll_Ranged : MonoBehaviour, IFEnemy
+public class Troll_Ranged : MonoBehaviour, IFRanged
 {
     [Header("Preset")]
     [Tooltip("Preset")]

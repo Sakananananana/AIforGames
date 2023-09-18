@@ -5641,3 +5641,68 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 267d787f2d2a5914f8d1ec4070eb2f0d, type: 3}
+--- !u!1001 &9137090971474529421
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 13.676129
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358397538761007232, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: _altar
+      value: 
+      objectReference: {fileID: 2088005094}
+    - target: {fileID: 8833089424206530444, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+      propertyPath: m_Name
+      value: Wolf Rider (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 89e08093a2bac534ab455b4233e74196, type: 3}

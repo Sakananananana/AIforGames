@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Troll_Projectile : MonoBehaviour
-{    
-    //[Header("Preset")]
-    //[Tooltip("Level 1 Boss Preset")]
-
+public class witchProjectile : MonoBehaviour
+{
+    public Transform _pjtTarget;
 
     [Header("Config")]
     [Tooltip("Config")]
@@ -26,19 +24,13 @@ public class Troll_Projectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player").transform;
         _pjtRb = GetComponent<Rigidbody>();
+        _pjtDirection = Objects_AI.CalculateDir(_pjtTarget.position, transform.position);
         Destroy(gameObject, 10f);
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        if (_isFollowing)
-        {
-            _pjtDirection = Objects_AI.CalculateDir(_player.position, transform.position);
-        }
-
         _pjtRotateAng = Objects_AI.CalRotateAmount(_pjtDirection, transform.forward);
         _pjtRb.angularVelocity = Objects_AI.AimTarget(_pjtRb, _pjtRotateAng, _pjtRotateSpd);
         _pjtRb.velocity = _pjtDirection * _pjtMoveSpd;
@@ -48,16 +40,9 @@ public class Troll_Projectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if(collider.CompareTag("DodgeTgr"))
-        {
-            _isFollowing = false;
-        }
-
-        if (collider.CompareTag("Player"))
+        if (collider.CompareTag("Player") || collider.CompareTag("Altar") || collider.CompareTag("Ground"))
         {
             gameObject.SetActive(false);
         }
     }
-
-
 }
