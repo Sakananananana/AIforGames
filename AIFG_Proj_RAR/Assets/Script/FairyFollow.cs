@@ -21,14 +21,14 @@ public class FairyFollow : MonoBehaviour
 
     public float steerForce = 1f;
     private float gravity = -9.8f;
-    PlayerMovements playerMVM;
+    public PlayerMovements playerMVM;
     int distance = 5;
     bool fairyCorout;
     // Start is called before the first frame update
    void Start()
     {
         rb = GetComponent<Rigidbody>();
-        playerMVM = gameObject.GetComponent<PlayerMovements>();
+        //playerMVM = gameObject.GetComponent<PlayerMovements>();
         accelRate = maxSpeed / accelTimeToMax;
         fairyCorout = true;
 
@@ -92,27 +92,48 @@ public class FairyFollow : MonoBehaviour
             if (actionNo == 0)
             {
 
-             //playerMVM.HP += 10;
+             playerMVM.HP += 10;
+             Debug.Log("Health");
                
             } 
 
             if(actionNo == 1)
             {
 
-             // playerMVM.speed +=4f;
+              playerMVM.speed +=4f;
+               Debug.Log("Speed");
                
             }
 
             if (actionNo == 2)
             {
 
-             // playerMVM.damage *=2;
+             playerMVM.damage *=2;
+              Debug.Log("Damage");
                
 
             }
             fairyCorout = false;
         
         yield return new WaitForSeconds(10f);
+
+        if(actionNo == 1)
+            {
+
+              playerMVM.speed -=4f;
+               Debug.Log("Speed");
+               
+            }
+
+            if (actionNo == 2)
+            {
+
+             playerMVM.damage /=2;
+              Debug.Log("Damage");
+               
+
+            }
+
         fairyCorout = true;
 
     }

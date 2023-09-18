@@ -5,35 +5,40 @@ using UnityEngine;
 public class meatHeal : MonoBehaviour
 {
 
-    public Rigidbody rb;
-    PlayerMovements playerMVM;
+   // public PlayerMovements playerMVM;
+    //public GameObject playerObject;
 
     float yPos = 5;
     void Awake()
     {
 
-        rb.AddForce(transform.up * 1);
+        
     }
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-         playerMVM = gameObject.GetComponent<PlayerMovements>();
+      
+         //playerMVM = gameObject.GetComponent<PlayerMovements>();
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        gameObject.transform.position = new Vector3(0,yPos,0);
+        //gameObject.transform.position = new Vector3(0,yPos,0);
     }
     
 
-     private void OnTriggerEnter(Collider other) 
+     public void OnTriggerEnter(Collider other) 
      {
-      //playerMVM.HP += 10;       
+
+        if (other.CompareTag("Player"))
+        {
+            other.gameObject.GetComponent<PlayerMovements>().HP += 10;
+
+        //layerMVM.HP += 10;       
         Debug.Log("Health++");
         Destroy(gameObject);
-
+        }
       }
 }
