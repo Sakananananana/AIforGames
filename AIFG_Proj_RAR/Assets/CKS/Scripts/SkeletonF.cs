@@ -12,6 +12,7 @@ public class SkeletonF : MonoBehaviour, IFMelee
     [SerializeField] private float _attackCD;
     [SerializeField] private float _atkRange;
     [SerializeField] private float _chaseRange;
+    DamageSystem dmgSys;
 
     [Space(30f)]
     [Header("Debug")]
@@ -33,6 +34,11 @@ public class SkeletonF : MonoBehaviour, IFMelee
         _playerTf = GameObject.FindGameObjectWithTag("Player").transform;
 
         _skeletonF_Rb = GetComponent<Rigidbody>();
+        dmgSys = GetComponent<DamageSystem>();
+        if (dmgSys != null)
+        {
+            dmgSys.Initialize();
+        }
     }
 
     // Update is called once per frame

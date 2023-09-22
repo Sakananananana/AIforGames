@@ -969,7 +969,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366307942}
-  m_LocalRotation: {x: 0.04455393, y: -0.34089702, z: 0.016176615, w: 0.938905}
+  m_LocalRotation: {x: 0.04455394, y: -0.340897, z: 0.016176613, w: 0.93890494}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3961,7 +3961,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.04455395, y: -0.34089708, z: 0.016176622, w: 0.93890494}
+  m_LocalRotation: {x: 0.04455395, y: -0.34089702, z: 0.01617662, w: 0.93890494}
   m_LocalPosition: {x: -1.9937185, y: 3.0534842, z: 4.3352747}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5518,20 +5518,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 873db6226af06f740bc0f9669ad80dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: {fileID: 1926755880}
   waveText: {fileID: 74385336}
   timerText: {fileID: 1926755882}
   gameController: {fileID: 1357861623}
   spawnedMob: {fileID: 1647130394}
   target: {fileID: 1548670171}
   prefabEnemy_Mob:
-  - {fileID: 4916374875285927367, guid: 267d787f2d2a5914f8d1ec4070eb2f0d, type: 3}
-  - {fileID: 4916374875285927367, guid: 267d787f2d2a5914f8d1ec4070eb2f0d, type: 3}
+  - {fileID: 1991320298000321702, guid: 0d926addb8f7f074a92def4cce61637d, type: 3}
+  - {fileID: 2705112043459788234, guid: 9c27b6c0a691fd84d9f6227d9902be7b, type: 3}
   goblin: {fileID: 1991320298000321702, guid: 0d926addb8f7f074a92def4cce61637d, type: 3}
-  troll: {fileID: 1991320298000321702, guid: b287f2c5efcf43b448c021f376042af1, type: 3}
-  mage: {fileID: 1991320298000321702, guid: d4b8329d54240ef46bd32c3c18b32ce1, type: 3}
-  wolf: {fileID: 1991320298000321702, guid: 1f43910d2c302f24b8045465e5ef89de, type: 3}
+  troll: {fileID: 2705112043459788234, guid: 9c27b6c0a691fd84d9f6227d9902be7b, type: 3}
+  mage: {fileID: 4704684170232640195, guid: 89e08093a2bac534ab455b4233e74196, type: 3}
+  wolf: {fileID: 4916374875285927367, guid: 267d787f2d2a5914f8d1ec4070eb2f0d, type: 3}
+  deer: {fileID: 4029853357622982167, guid: 59da4dfd663987449a74d048d0381c1e, type: 3}
   thisWaveSpawnthisEnemy: []
-  targetTag: Enemy
 --- !u!1 &1358238375
 GameObject:
   m_ObjectHideFlags: 0
@@ -8584,6 +8585,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2049168917}
   - component: {fileID: 2049168918}
+  - component: {fileID: 2049168920}
+  - component: {fileID: 2049168919}
   m_Layer: 7
   m_Name: Trigger Collider
   m_TagString: Altar
@@ -8627,6 +8630,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 8.945841, y: 5.56338, z: 7.6168184}
   m_Center: {x: 0.1740942, y: 3.2399685, z: -2.4539332}
+--- !u!114 &2049168919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049168916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea330e2aaea1c7441bea26af808eb488, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 2000
+  currentHealth: 0
+  attackDamage: 0
+--- !u!114 &2049168920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049168916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69d4e2ddac85fea4abca6192f330ec33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2074519840 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3321267667862634411, guid: a3e4ead3cc2553945a43f76e56f03859, type: 3}

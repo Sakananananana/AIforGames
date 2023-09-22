@@ -5,6 +5,7 @@ using UnityEngine;
 public class SkeletonL : MonoBehaviour, IFMelee
 {
     public List<Transform> _formationPoss;
+    DamageSystem dmgSys;
 
     [Header("Config")]
     [Tooltip("Config")]
@@ -29,6 +30,11 @@ public class SkeletonL : MonoBehaviour, IFMelee
     {
         _target = GameObject.FindGameObjectWithTag("Player");
         _skeletonL_Rb = GetComponent<Rigidbody>();
+        dmgSys = GetComponent<DamageSystem>();
+        if (dmgSys != null)
+        {
+            dmgSys.Initialize();
+        }
     }
 
     // Update is called once per frame
@@ -85,5 +91,22 @@ public class SkeletonL : MonoBehaviour, IFMelee
         _isAttacking = true;
         yield return new WaitForSeconds(cd);
         _isAttacking = false;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (dmgSys != null)
+        {
+            dmgSys.TakeDamage(damage);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Sword") || other.CompareTag("AirBlade"))
+        {
+            TakeDamage(10);
+            Debug.Log(dmgSys.currentHealth);
+        }
     }
 }
