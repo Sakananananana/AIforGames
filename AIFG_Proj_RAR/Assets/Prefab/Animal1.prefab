@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1122722364058497278}
   m_Layer: 0
   m_Name: Animal1
-  m_TagString: Untagged
+  m_TagString: Deer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61,6 +61,7 @@ MonoBehaviour:
   circleRad: 1
   isDead: 0
   isWalking: 0
+  isGrounded: 0
   timeSinceLastDirectionChange: 0
   anim: {fileID: 5103849105232941684}
 --- !u!54 &1222593767041380048
@@ -88,7 +89,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 84
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &1122722364058497278
 BoxCollider:

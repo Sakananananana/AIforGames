@@ -44,6 +44,11 @@ public class PauseBehaviour : UserInterface
         { 
             RestartMenu();
         }
+
+        if (AltarDamage.isDead)
+        {
+            RestartMenu(); 
+        }
     }
 
     public void BackToPause()
@@ -55,6 +60,7 @@ public class PauseBehaviour : UserInterface
     public void Restart()
     {
         Time.timeScale = 1.0f;
+        AltarDamage.isDead = false;
         player.isDead = false;
         player.HP = 100;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

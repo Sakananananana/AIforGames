@@ -11,7 +11,8 @@ public class Witch : MonoBehaviour, IFRanged
     [SerializeField] private GameObject _pjtPrefab;
     [SerializeField] private GameObject _skeletonF_Prefab;
     [SerializeField] private GameObject _skeletonL_Prefab;
-    
+    DamageSystem dmgSys;
+
     [Space(30f)]
     [Header("Config")]
     [Tooltip("Config")]
@@ -50,6 +51,11 @@ public class Witch : MonoBehaviour, IFRanged
         _witchRb = GetComponent<Rigidbody>();
         _playerTf = GameObject.FindGameObjectWithTag("Player").transform;
         _altarTf = GameObject.FindGameObjectWithTag("Altar").transform;
+        dmgSys = GetComponent<DamageSystem>();
+        if (dmgSys != null)
+        {
+            dmgSys.Initialize();
+        }
 
     }
 
@@ -169,5 +175,22 @@ public class Witch : MonoBehaviour, IFRanged
 
         yield return new WaitForSeconds(cd);
         _isFiring = false;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (dmgSys != null)
+        {
+            dmgSys.TakeDamage(damage);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Sword") || other.CompareTag("AirBlade"))
+        {
+            TakeDamage(10);
+            Debug.Log(dmgSys.currentHealth);
+        }
     }
 }

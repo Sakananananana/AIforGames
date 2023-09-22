@@ -21,7 +21,6 @@ public class AnimalWander : MonoBehaviour
     Vector3 desirVelocity;
     Vector3 curDir;   
     Vector3 lookDir;
-
     public float steerForce = 1f;
     private float gravity = -9.8f;
 
@@ -32,6 +31,7 @@ public class AnimalWander : MonoBehaviour
 
     public bool isDead;
     public bool isWalking;
+    public bool isGrounded;
  
      public float timeSinceLastDirectionChange;
      private float changeDirectionInterval = 5.0f;
@@ -54,45 +54,34 @@ public class AnimalWander : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        
-
         //wander part
         timeSinceLastDirectionChange += Time.deltaTime;
-          if(timeSinceLastDirectionChange >= changeDirectionInterval) 
+        if(timeSinceLastDirectionChange >= changeDirectionInterval) 
         {
-       
-        
-        
-
-        //set direction
-        var vector2 = Random.insideUnitCircle.normalized * circleRad;
-        //change direction if near altar
-        if(vector2.y < 15 || vector2.y >-5 || vector2.x < 10 || vector2.x > -10 )
-        {
-
-            vector2 = Random.insideUnitCircle.normalized * circleRad;
-        }
+            //set direction
+            var vector2 = Random.insideUnitCircle.normalized * circleRad;
+            //change direction if near altar
+            if(vector2.y < 15 || vector2.y >-5 || vector2.x < 10 || vector2.x > -10 )
+            {
+                vector2 = Random.insideUnitCircle.normalized * circleRad;
+            }
 
 
-        circleCircumPos = new Vector3(vector2.x,0,vector2.y);
-        targetPos =circlePos + circleCircumPos;
+            circleCircumPos = new Vector3(vector2.x,0,vector2.y);
+            targetPos = circlePos + circleCircumPos;
 
          
-        targetDir = (targetPos - WanderAi.transform.position).normalized;
-        targetDir.y = 0;
-        timeSinceLastDirectionChange = 0.0f;
-       }
+            targetDir = (targetPos - WanderAi.transform.position).normalized;
+            targetDir.y = 0;
+            timeSinceLastDirectionChange = 0.0f;
+        }
  
         //Debug.Log(targetDir);
-        rb.AddForce(transform.up * gravity * Time.deltaTime);
         circlePos = WanderAi.transform.position + ((curDir * currentSpeed).normalized) * circleDist;
         //Debug.Log(isWalking);
         if(isWalking == false)
         {
-        StartCoroutine(WanderAround());
-
-
+            StartCoroutine(WanderAround());
         }
         curDir = Vector3.RotateTowards(WanderAi.transform.forward,targetDir, 5*Time.deltaTime, 0.0f);
         //Debug.Log(curDir);
@@ -103,28 +92,24 @@ public class AnimalWander : MonoBehaviour
             maxSpeed = 0;
         }
        
-
         if(currentSpeed < maxSpeed)
         {
-
             currentSpeed = currentSpeed + accelRate * Time.deltaTime;
         }
         else
         {
             currentSpeed = maxSpeed;
-
         }
 
         steerDir = targetDir - curDir;
-        rb.velocity = (currentSpeed * curDir) + (steerDir *steerForce);
+        rb.AddForce(steerDir *steerForce);
+       
+            rb.velocity = (currentSpeed * curDir);
         // end wandering
-
-        
 
         Debug.DrawRay(WanderAi.transform.position, targetDir, Color.black);
         Debug.DrawRay(WanderAi.transform.position, WanderAi.transform.forward, Color.green);
         Debug.DrawRay(WanderAi.transform.position, steerDir, Color.red);
-
     }
     
     IEnumerator WanderAround()
@@ -140,31 +125,22 @@ public class AnimalWander : MonoBehaviour
         isWalking = false;
         anim.SetBool("isWalking", false);
         maxSpeed = 0;                
-       
-       
-
     }
 
+    void amDead()
+     {
+        Destroy(gameObject,3f);
+        anim.SetTrigger("isDead");
     
-   
- void amDead()
- {
+        Instantiate(healingMeat, WanderAi.transform.position, Quaternion.identity);
+     }
 
-    Destroy(gameObject,3f);
-    anim.SetTrigger("isDead");
-    
-    Instantiate(healingMeat, WanderAi.transform.position, Quaternion.identity);
-    
- }
-
-
-      private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
       {
         if (other.CompareTag("Sword"))
         {
-
-        amDead();
-        isDead = true;
+            amDead();
+            isDead = true;
         }
       }
 

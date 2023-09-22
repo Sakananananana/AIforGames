@@ -7,6 +7,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     #region Declaration
+    public GameObject timer;
     public TextMeshProUGUI waveText;
     public TextMeshProUGUI timerText;
     float timeRemaining = 30;
@@ -21,18 +22,20 @@ public class GameController : MonoBehaviour
     public Transform troll;
     public Transform mage;
     public Transform wolf;
+    public Transform deer;
     int nextMob;
 
     //Check on ground enemy and coroutine progress
     [SerializeField] List<Transform> thisWaveSpawnthisEnemy;
     GameObject[] currentEnemyCount;
-    public string targetTag = "Enemy";
+    GameObject[] currentDeerCount;
     bool isCoroutineFinished;
     bool enemySpawning;
     bool isInterlude;
     //for enemy spawning mechanics
     int maxEnemyCountInWave;
     int enemyCountInWave;
+    int spawnedDeer;
     int enemyCount;
     int waveCount;
     //for randomize mob spawn and specific num of the mob
@@ -46,6 +49,11 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        for (int i = 0; i < 3; i++)
+        {
+            DeerSpawner();
+        }
+
         nextMob = 0;
         waveCount = 1;
         enemyCountInWave = 0;
@@ -53,6 +61,7 @@ public class GameController : MonoBehaviour
         EnemyWave();
         WaveNumberUpdate();
 
+        timer.SetActive(false);
         isInterlude = false;
         enemySpawning = false;
         isCoroutineFinished = false;
@@ -61,7 +70,7 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        currentEnemyCount = GameObject.FindGameObjectsWithTag(targetTag);
+        currentEnemyCount = GameObject.FindGameObjectsWithTag("Enemy");
         enemyCount = currentEnemyCount.Length;
 
         //for now it spawn until 10, now i want to control the mob on playground is 3 max and overall count is 10
@@ -91,7 +100,18 @@ public class GameController : MonoBehaviour
 
         if (isInterlude)
         {
+            timer.SetActive(true);
             TimerUpdate();
+        }
+
+        if (isInterlude)
+        {
+            currentDeerCount = GameObject.FindGameObjectsWithTag("Deer");
+            if (currentDeerCount.Length < 3 && spawnedDeer != 3)
+            {
+                DeerSpawner();
+                spawnedDeer++;
+            }
         }
     }
 
@@ -151,6 +171,7 @@ public class GameController : MonoBehaviour
         EnemyWave();
         WaveNumberUpdate();
         nextMob = 0;
+        spawnedDeer = 0;
         enemyCountInWave = 0;
         isInterlude = false;
         timeRemaining = 30;
@@ -163,9 +184,9 @@ public class GameController : MonoBehaviour
             case 1:
                 {
                     goblin = prefabEnemy_Mob[0];
-                    mage = prefabEnemy_Mob[1];
+                    troll = prefabEnemy_Mob[1];
 
-                    mageNum = 3;
+                    trollNum = 3;
                     goblinNum = 7;
 
                     for (int i = 0; i < maxEnemyCountInWave; i++)
@@ -174,9 +195,9 @@ public class GameController : MonoBehaviour
                         {
                             prefabEnemy_Mob.Remove(goblin);
                         }
-                        if (mageNum == 0)
+                        if (trollNum == 0)
                         {
-                            prefabEnemy_Mob.Remove(mage);
+                            prefabEnemy_Mob.Remove(troll);
                         }
 
                         randomIndex = Random.Range(0, prefabEnemy_Mob.Count);
@@ -187,14 +208,14 @@ public class GameController : MonoBehaviour
                         }
                         else
                         {
-                            mageNum--;
+                            trollNum--;
                         }
                     }
 
                     prefabEnemy_Mob.Clear();
 
                     prefabEnemy_Mob.Insert(0, goblin);
-                    prefabEnemy_Mob.Insert(1, mage);
+                    prefabEnemy_Mob.Insert(1, troll);
                     prefabEnemy_Mob.Insert(2, wolf);
 
                 }
@@ -203,11 +224,11 @@ public class GameController : MonoBehaviour
             case 2:
                 {
                     goblin = prefabEnemy_Mob[0];
-                    mage = prefabEnemy_Mob[1];
+                    troll = prefabEnemy_Mob[1];
                     wolf = prefabEnemy_Mob[2];
 
                     wolfNum = 3;
-                    mageNum = 3;
+                    trollNum = 3;
                     goblinNum = 6;
                     
 
@@ -217,9 +238,9 @@ public class GameController : MonoBehaviour
                         {
                             prefabEnemy_Mob.Remove(goblin);
                         }
-                        if (mageNum == 0)
+                        if (trollNum == 0)
                         {
-                            prefabEnemy_Mob.Remove(mage);
+                            prefabEnemy_Mob.Remove(troll);
                         }
                         if (wolfNum == 0)
                         {
@@ -232,9 +253,9 @@ public class GameController : MonoBehaviour
                         {
                             goblinNum--;
                         }
-                        if (prefabEnemy_Mob[randomIndex] == mage)
+                        if (prefabEnemy_Mob[randomIndex] == troll)
                         {
-                            mageNum--;
+                            trollNum--;
                         }
                         if (prefabEnemy_Mob[randomIndex] == wolf)
                         {
@@ -245,18 +266,18 @@ public class GameController : MonoBehaviour
                     prefabEnemy_Mob.Clear();
 
                     prefabEnemy_Mob.Insert(0, goblin);
-                    prefabEnemy_Mob.Insert(1, mage);
+                    prefabEnemy_Mob.Insert(1, troll);
                     prefabEnemy_Mob.Insert(2, wolf);
-                    prefabEnemy_Mob.Insert(3, troll);
+                    prefabEnemy_Mob.Insert(3, mage);
                 }
                 break;
 
             case 3: 
                 {
                     goblin = prefabEnemy_Mob[0];
-                    mage = prefabEnemy_Mob[1];
+                    troll = prefabEnemy_Mob[1];
                     wolf = prefabEnemy_Mob[2];
-                    troll= prefabEnemy_Mob[3];
+                    mage = prefabEnemy_Mob[3];
 
                     wolfNum = 3;
                     mageNum = 3;
@@ -319,6 +340,32 @@ public class GameController : MonoBehaviour
         {
             timeRemaining -= Time.deltaTime;
             timerText.text = timeRemaining.ToString();
+        }
+        else
+        {
+            timer.SetActive(false);
+        }
+    }
+
+    void DeerSpawner()
+    {
+        List<GameObject> spawnPoint = new List<GameObject>();
+
+        foreach (Transform child in gameController)
+        {
+            if (child.CompareTag("Spawn"))
+            {
+                spawnPoint.Add(child.gameObject);
+            }
+        }
+
+        if (spawnPoint.Count > 0)
+        {
+            GameObject mobSpawnPoint = spawnPoint[Random.Range(0, spawnPoint.Count)];
+
+            Vector3 spawnPos = mobSpawnPoint.transform.position;
+
+            Transform newMob = Instantiate(deer, spawnPos, Quaternion.identity);
         }
     }
 }

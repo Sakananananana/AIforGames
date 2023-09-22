@@ -16,6 +16,7 @@ TagManager:
   - Altar
   - AirBlade
   - EnemyProjectile
+  - Deer
   layers:
   - Default
   - TransparentFX

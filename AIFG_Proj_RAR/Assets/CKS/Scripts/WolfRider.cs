@@ -8,6 +8,8 @@ public class WolfRider : MonoBehaviour, IFMelee
     [Tooltip("Preset")]
     [SerializeField] private Transform _player;
     [SerializeField] private Transform _altar;
+    DamageSystem dmgSys;
+
 
     [Header("Config")]
     [Tooltip("Config")]
@@ -34,6 +36,11 @@ public class WolfRider : MonoBehaviour, IFMelee
         _wolfRiderRb = GetComponent<Rigidbody>();
         _player = GameObject.FindGameObjectWithTag("Player").transform;
         _altar = GameObject.FindGameObjectWithTag("Altar").transform;
+        dmgSys = GetComponent<DamageSystem>();
+        if (dmgSys != null)
+        {
+            dmgSys.Initialize();
+        }
     }
 
     // Update is called once per frame
@@ -76,6 +83,9 @@ public class WolfRider : MonoBehaviour, IFMelee
                 _moveSpeed = _ragedMoveSpd;
                 _isFirstAttacked = true;
             }
+
+            TakeDamage(10);
+            Debug.Log(dmgSys.currentHealth);
         }
     }
     private IEnumerator StartAttack(float cd)
@@ -94,6 +104,14 @@ public class WolfRider : MonoBehaviour, IFMelee
         {
             StopCoroutine(_atkCoroutine);
             _atkCoroutine = null;
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (dmgSys != null)
+        {
+            dmgSys.TakeDamage(damage);
         }
     }
 }
